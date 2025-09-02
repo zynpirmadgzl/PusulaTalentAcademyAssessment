@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
+using System.Text.Encodings.Web;
 
 public static class FilterEmployeesTask4
 {
     public static string FilterEmployees(IEnumerable<(string Name, int Age, string Department, decimal Salary, DateTime HireDate)> employees)
     {
-        // Filtrele
         var filteredEmployees = employees
             .Where(emp => 
                 emp.Age >= 25 && emp.Age <= 40 &&
@@ -32,6 +32,12 @@ public static class FilterEmployeesTask4
             Count = filteredEmployees.Count
         };
 
-        return JsonSerializer.Serialize(result);
+        var options = new JsonSerializerOptions
+        {
+            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+            WriteIndented = true 
+        };
+
+        return JsonSerializer.Serialize(result, options);
     }
 }
